@@ -48,3 +48,64 @@ class DeletableResource:
         url = urljoin(self._endpoint, code)
         res = self._session.delete(url)
         return res
+
+# Pools
+
+# Order Pool
+
+class OrderShipActionPool(
+    ResourcePool, 
+    CreatableResource):
+    pass
+
+class OrderShipPool(ResourcePool):
+    @property
+    def custom(self):
+        return OrderAcceptRejectPool(
+            urljoin(self._endpoint, 'custom'), self._session
+        )
+
+    @property
+    def ankorstore(self):
+        return OrderAcceptRejectPool(
+            urljoin(self._endpoint, 'ankorstore'), self._session
+        )
+
+    @property
+    def confirm(self):
+        return OrderAcceptRejectPool(
+            urljoin(self._endpoint, 'confirm'), self._session
+        )
+
+    @property
+    def schedule_pickup(self):
+        return OrderAcceptRejectPool(
+            urljoin(self._endpoint, 'schedule-pickup'), self._session
+        )
+
+class OrderAcceptRejectPool(
+    ResourcePool,
+    CreatableResource):
+    pass
+
+class OrderPool(
+    ResourcePool,
+    ListableResource,
+    GettableResource):
+
+    def accept(self, order_id):
+        return OrderAcceptRejectPool(
+            urljoin(self._endpoint, order_id, 'accept'), self._session
+        )
+
+    def reject(self, order_id):
+        return OrderAcceptRejectPool(
+            urljoin(self._endpoint, order_id, 'reject'), self._session
+        )
+
+    def ship(self, order_id):
+        return OrderShipPool(
+            urljoin(self._endpoint, order_id, 'ship'), self._session
+        )
+
+# 
