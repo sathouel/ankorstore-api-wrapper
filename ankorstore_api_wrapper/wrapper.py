@@ -29,7 +29,7 @@ class APIWrapper:
             self._authenticate(client_id, client_secret)
 
     def _authenticate(self, client_id, client_secret):
-        if not client_id or client_secret:
+        if not client_id or not client_secret:
             raise ValueError('No client_id and client_secret provided')
         
         auth_url = 'https://www.ankorstore.com/oauth/token'
