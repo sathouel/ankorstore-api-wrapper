@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="ankorstore-api-wrapper",
-    version="0.0.1",
+    version="0.0.2",
     author="Steven Athouel",
     author_email="sathouel@gmail.com",
     description="A simple api wrapper for ankorstore brands",

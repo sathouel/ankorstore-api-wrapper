@@ -88,6 +88,31 @@ class OrderAcceptRejectPool(
     CreatableResource):
     pass
 
+class OrderRelationshipPool(
+    ResourcePool,
+    ListableResource):
+    pass
+
+class OrderItemsProductOptionPool(
+    ResourcePool,
+    ListableResource):
+
+    @property
+    def product(self):
+        return OrderRelationshipPool(
+            self._endpoint + '.product', self._session
+        )
+
+class OrderItemsPool(
+    ResourcePool,
+    ListableResource):
+    
+    @property
+    def product_option(self):
+        return OrderItemsProductOptionPool(
+            self._endpoint + '.product-option', self._session
+        )
+
 class OrderPool(
     ResourcePool,
     ListableResource,
@@ -106,6 +131,11 @@ class OrderPool(
     def ship(self, order_id):
         return OrderShipPool(
             urljoin(self._endpoint, order_id, 'ship'), self._session
+        )
+
+    def order_items(self, order_id):
+        return OrderItemsPool(
+            urljoin(self._endpoint, order_id, 'relationships', 'order-items'), self._session
         )
 
 # 
