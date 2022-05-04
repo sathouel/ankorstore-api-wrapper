@@ -12,7 +12,8 @@ class ResourcePool:
         return self._endpoint
 
 class CreatableResource:
-    def create_item(self, item):
+    def create_item(self, item, headers={}):
+        self._session.headers.update(headers)
         res = self._session.post(self._endpoint, data=json.dumps(item))
         return res
 
@@ -36,9 +37,10 @@ class SearchableResource:
         return res
 
 class UpdatableResource:
-    def update_create_item(self, item, code=None):
+    def update_create_item(self, item, code=None, headers={}):
         if code is None:
             code = item.get('id')
+        self._session.headers.update(headers)
         url = urljoin(self._endpoint, code)
         res = self._session.put(url, data=json.dumps(item))
         return res
